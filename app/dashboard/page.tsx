@@ -7,7 +7,6 @@ const DashboardPage = () => {
     const [user, setUser] = React.useState<any>(null);
     useEffect(() => {
         const fetchData = async () => {
-            let status = 0
             try {
                 const cookieValue = document.cookie.split('; ')
                     .find(row => row.startsWith('token='))
@@ -20,9 +19,8 @@ const DashboardPage = () => {
                 });
                 const data = await response.json();
                 setUser(data.data);
-                return status;
             } catch (error) {
-                return error;
+                console.log(error);
             }
         };
 
