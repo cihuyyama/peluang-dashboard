@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { ColumnDef } from "@tanstack/react-table"
 import Image from "next/image"
 import { MoreHorizontal } from "lucide-react"
@@ -46,6 +47,8 @@ import { toast } from "sonner"
 import { BASE_URL } from "@/types/BaseURL"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { ChangeEvent, FormEvent, FormEventHandler, useState } from "react"
+import { Label } from "@/components/ui/label"
 
 export const merchantColumn: ColumnDef<Merchant>[] = [
   {
@@ -59,14 +62,95 @@ export const merchantColumn: ColumnDef<Merchant>[] = [
     header: "pfp",
     cell: ({ row }) => {
       const merchant = row.original
+      const [file, setFile] = useState<any>()
+      const [preview, setPreview] = useState<string | null>(null);
+      const onSubmitEvent = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append('file', file);
+        try {
+          const cookieValue = document.cookie.split('; ')
+            .find(row => row.startsWith('token='))
+            ?.split('=')[1];
+          toast.promise(
+            fetch(`${BASE_URL}/v1/merchant/${merchant.id}/avatar`, {
+              method: "PUT",
+              headers: {
+                "Authorization": `Bearer ${cookieValue}`,
+              },
+              body: formData,
+            }),
+            {
+              loading: "Saving...",
+              success: () => {
+                setTimeout(() => {
+                  location.reload();
+                }, 300);
+                return "Saved Successfully";
+              },
+              error: (data: string) => {
+                console.log(data)
+                return `Failed - ${data.split(' ')[3]}`;
+              },
+            }
+          )
+        } catch (error) {
+          console.log(error)
+        }
+      }
+      const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const files = e.target.files;
+        if (!files || files.length === 0) return;
+        const selectedFile = files[0];
+        console.log(selectedFile);
+        setFile(selectedFile);
+
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setPreview(reader.result as string);
+        };
+        reader.readAsDataURL(selectedFile);
+      }
       return (
-        <Image
-          src={merchant.img_url}
-          alt={merchant.name}
-          width={40}
-          height={40}
-          className="w-10 h-10 rounded-full"
-        />
+        <Dialog>
+          <DialogTrigger>
+            <Image
+              unoptimized
+              src={merchant.img_url}
+              alt={merchant.name}
+              width={40}
+              height={40}
+              className="w-10 h-10 object-cover rounded-full"
+            />
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Update Photo</DialogTitle>
+              <DialogDescription>
+                Update the photo of the merchant
+              </DialogDescription>
+            </DialogHeader>
+
+            <form onSubmit={onSubmitEvent}>
+              <Label htmlFor="picture">Picture</Label>
+              <Input id="picture" onChange={e => handleChange(e)} type="file" accept="image/*" />
+              {preview && (
+                <div className="mt-2 flex justify-center">
+                  <Image
+                    src={preview}
+                    alt="Selected preview"
+                    className="w-40 h-40 object-cover rounded-full"
+                    width={160}
+                    height={160}
+                  />
+                </div>
+              )}
+              <Button type="submit" className="mt-4">
+                Upload
+              </Button>
+            </form>
+          </DialogContent>
+        </Dialog>
       )
     }
   },
@@ -194,9 +278,6 @@ export const merchantColumn: ColumnDef<Merchant>[] = [
                     Delete Merchant
                   </DropdownMenuItem>
                 </AlertDialogTrigger>
-                {/* <DropdownMenuItem>
-                  Update Photo
-                </DropdownMenuItem> */}
               </DropdownMenuContent>
             </DropdownMenu>
 

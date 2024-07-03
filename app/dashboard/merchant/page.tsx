@@ -17,7 +17,6 @@ const MerchantPage = () => {
                 })
                 const data = await response.json()
                 setData(data.data)
-                console.log(data.data)
             } catch (e) {
                 console.log(e)
             }
