@@ -101,14 +101,17 @@ export function DataTable<TData, TValue>({
                     body: JSON.stringify(values),
                 }),
                 {
-                    loading: "Creating new Disease",
+                    loading: "Saving...",
                     success: () => {
                         setTimeout(() => {
                             location.reload();
                         }, 300);
-                        return "Disease Created Successfully";
+                        return "Saved Successfully";
                     },
-                    error: "Failed to create Disease",
+                    error: (data: string) => {
+                        console.log(data)
+                        return `Failed - ${data.split(' ')[3]}`;
+                    },
                 }
             )
         } catch (error) {
@@ -181,7 +184,7 @@ export function DataTable<TData, TValue>({
                                                         </SelectTrigger>
                                                     </FormControl>
                                                     <SelectContent>
-                                                        <SelectItem value="Food & Baverages">Food & Baverages</SelectItem>
+                                                        <SelectItem value="Food & Beverages">Food & Beverages</SelectItem>
                                                         <SelectItem value="Beauty/Self Care">Beauty/Self Care</SelectItem>
                                                         <SelectItem value="Automotive">Automotive</SelectItem>
                                                     </SelectContent>

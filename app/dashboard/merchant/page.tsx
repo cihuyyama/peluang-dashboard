@@ -3,8 +3,9 @@
 import { ScrollArea } from '@/components/ui/scroll-area'
 import React, { useEffect } from 'react'
 import { DataTable } from './data-table'
-import { Merchant, merchantColumn } from './columns'
+import { merchantColumn } from './columns'
 import { BASE_URL } from '@/types/BaseURL'
+import { Merchant } from '@/types/merchant'
 
 const MerchantPage = () => {
     const [data, setData] = React.useState<Merchant[]>([])

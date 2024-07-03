@@ -44,6 +44,10 @@ const LoginPage = () => {
           success: async (response) => {
             const data = await response.json();
             document.cookie = `token=${data.data}`;
+
+            const millis = new Date().getTime() + 1000 * 60 * 60 * 24;
+            document.cookie = `exp=${millis}`;
+
             console.log(data.data)
             router.push('/dashboard');
             return 'Logged in successfully';

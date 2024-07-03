@@ -18,6 +18,7 @@ const DashboardPage = () => {
                     }
                 });
                 const data = await response.json();
+                console.log(data.code);
                 setUser(data.data);
             } catch (error) {
                 console.log(error);
