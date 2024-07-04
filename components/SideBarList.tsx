@@ -12,8 +12,7 @@ function SideBarList() {
         <Sidebar>
             <SidebarItem active={firstPath==='diseases'} icon={<HomeIcon />} link="/dashboard" text="Home" />
             <SidebarItem active={firstPath==='endemics'} icon={<BarChartIcon />} link="/dashboard/merchant" text="Merchant" />
-            {/* <SidebarItem active={firstPath==='symptoms'} icon={<FlaskConical />} link="/symptoms" text="Symptom" />
-            <SidebarItem active={firstPath==='logs'} icon={<FileClock />} link="/logs" text="Log" /> */}
+            <SidebarItem active={firstPath==='symptoms'} icon={<FlaskConical />} link="/dashboard/banner" text="Banner" />
         </Sidebar>
     )
 }

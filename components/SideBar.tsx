@@ -25,6 +25,7 @@ export default function Sidebar({ children }: { children: ReactNode }) {
 
   function delete_cookie() {
     document.cookie = 'token' + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    document.cookie = 'exp' + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
   }
 
   return (
