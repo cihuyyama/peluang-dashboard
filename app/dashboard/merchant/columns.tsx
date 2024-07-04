@@ -49,6 +49,7 @@ import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { ChangeEvent, FormEvent, FormEventHandler, useState } from "react"
 import { Label } from "@/components/ui/label"
+import Link from "next/link"
 
 export const merchantColumn: ColumnDef<Merchant>[] = [
   {
@@ -278,6 +279,12 @@ export const merchantColumn: ColumnDef<Merchant>[] = [
                     Delete Merchant
                   </DropdownMenuItem>
                 </AlertDialogTrigger>
+                <DropdownMenuSeparator />
+                <Link href={`/dashboard/merchant/${merchant.slug}/images`}>
+                  <DropdownMenuItem>
+                    Merchat Images
+                  </DropdownMenuItem>
+                </Link>
               </DropdownMenuContent>
             </DropdownMenu>
 
